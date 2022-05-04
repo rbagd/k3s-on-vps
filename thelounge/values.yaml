@@ -13,16 +13,13 @@ image:
   # -- image tag
   tag: 4.2.0-alpine
 
-securityContext:
-  runAsUser: 1000
-
 strategy:
   type: Recreate
 
 # -- environment variables. See [image docs](https://hub.docker.com/r/thelounge/thelounge/) for more details.
 # @default -- See below
 env:
-  THELOUNGE_HOME: "~/.thelounge"
+  THELOUNGE_HOME: "/config"
 
 # -- Configures service settings for the chart. Normally this does not need to be modified.
 # @default -- See values.yaml
@@ -43,8 +40,9 @@ persistence:
   config:
     enabled: true
     type: pvc
+    existingClaim: thelounge-config
 
-    mountPath: "~/.thelounge"
+    mountPath: "/config"
     readOnly: false
 
 
