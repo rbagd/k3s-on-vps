@@ -1,0 +1,12 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: tt-rss
+spec:
+  routes:
+  - kind: Rule
+    match: Host(`rss.rytis.be`)
+    services:
+    - name: tt-rss
+      port: 8080
+
