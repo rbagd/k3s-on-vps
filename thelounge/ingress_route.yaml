@@ -1,0 +1,30 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: thelounge-irc-prefix
+  namespace: default
+spec:
+  stripPrefix:
+    prefixes:
+      - /irc
+
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: thelounge
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`rytis.be`) && PathPrefix(`/irc`)
+      services:
+      - kind: Service
+        name: thelounge
+        port: 9000
+      middlewares:
+      - name: thelounge-irc-prefix
+
