@@ -1,0 +1,12 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: hello
+spec:
+  routes:
+  - kind: Rule
+    match: Host(`rytis.be`) && Path(`/`)
+    services:
+    - name: hello
+      port: 80
+
