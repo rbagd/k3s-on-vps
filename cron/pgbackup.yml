@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pg-backup
+spec:
+  schedule: "23 22 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: pg-backup
+            image: postgres:latest
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - find /opt/pgbackup -mindepth 1 -ctime +7 -delete && pg_basebackup --dbname=$PG_CONNSTR -D /opt/pgbackup/tmp -F tar --gzip -X stream && mv /opt/pgbackup/tmp /opt/pgbackup/$(FILEDATE)
+            volumeMounts:
+            - name: postgres-backup
+              mountPath: /opt/pgbackup
+            env:
+              - name: PG_CONNSTR
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-connstring
+                    key: uri
+                    optional: false
+              - name: FILEDATE
+                value: $(date +"%Y%m%d")
+          volumes:
+          - name: postgres-backup
+            persistentVolumeClaim:
+              claimName: postgres-backup
+          restartPolicy: OnFailure
