@@ -47,6 +47,11 @@ spec:
         - name: index-page
           mountPath: /usr/share/nginx/html/index.html
           subPath: index.html
+        resources:
+          limits:
+            cpu: 50m
+          requests:
+            cpu: 50m
       volumes:
       - name: index-page
         configMap:
