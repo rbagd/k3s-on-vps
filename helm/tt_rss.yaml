@@ -31,4 +31,3 @@ ingress:
 # @default -- see bellow
 postgresql:
   enabled: false
-

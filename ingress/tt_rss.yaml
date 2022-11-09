@@ -9,4 +9,3 @@ spec:
     services:
     - name: tt-rss
       port: 8080
-

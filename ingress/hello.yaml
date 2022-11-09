@@ -9,4 +9,3 @@ spec:
     services:
     - name: hello
       port: 80
-
